@@ -1,17 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+//useParam, useNavigate
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import Bundles from './Bundles';
+import Courseid from './Courseid';
+import Courses from './Courses';
+import Learn from './Learn';
+
+const Dashboard = () => {
+  const location = useLocation()
+  return (
+    <div>
+        <h1>Info that I got here is {location.state}</h1>
+    </div>
+  )
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Router>
+    <Routes>
+      <Route path='/' element={<App/>}></Route>
+      <Route path='/myapps' element={<Navigate replace to="/learn"/>}></Route>
+      <Route path='/learn' element={<Learn/>}>
+        <Route path='courses' element={<Courses/>}>
+          <Route path=':courseid' element={<Courseid/>}></Route>
+        </Route>
+        <Route path='bundles' element={<Bundles/>}></Route>
+      </Route>
+      <Route path='/dashboard' element={<Dashboard/>}></Route>
+    </Routes>
+    
+  </Router>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
